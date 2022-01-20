@@ -19,6 +19,8 @@ export default class PlayerAnimations extends Phaser.GameObjects.Sprite {
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
 
+    this.setOrigin(0.5, 1);
+
     this.body.setAllowGravity(false);
     // Queremos que el jugador no se salga de los límites del mundo
     this.body.setCollideWorldBounds();
@@ -35,6 +37,7 @@ export default class PlayerAnimations extends Phaser.GameObjects.Sprite {
     this.sKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.wKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.space = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.esc = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
     this.updateScore();
 
     this.anims.create({
@@ -118,6 +121,9 @@ export default class PlayerAnimations extends Phaser.GameObjects.Sprite {
     else if (this.wKey.isDown) {
       this.body.setVelocityY(-this.speed);
       this.play('down', true);
+    }
+    else if (this.esc.isDown) {
+      this.scene.scene.start('mainmenu');
     }
     else {
       this.body.setVelocity(0,0);

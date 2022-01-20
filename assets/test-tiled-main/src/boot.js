@@ -18,38 +18,20 @@ export default class Boot extends Phaser.Scene {
    */
   preload() {
     // Con setPath podemos establecer el prefijo que se añadirá a todos los load que aparecen a continuación
-    
     this.load.setPath('assets/sprites/');
+    this.load.image('background', 'background.png');
     this.load.image('platform', 'platform.png');
     this.load.image('base', 'base.png');
     this.load.image('star', 'star.png');
     this.load.image('player', 'player.png');
-    this.load.spritesheet('playeranim', 
-    'NicePng_sprite-png_2007324.png',
-    { frameWidth: 64, frameHeight: 64 });
 
-    this.load.spritesheet('guy', 'guy1400.png',
-    { frameWidth: 200, frameHeight: 342 });
-
-    this.load.spritesheet('botones', 'botones.png', {
-      frameWidth: 240,
-      frameHeight: 48
-    });
-    
-    //Cargamos los fondos
-    this.load.image('sky', 'sky-clouds.jpg');
-    this.load.image('mountains', 'mountains1000.png');
-    this.load.image('menuprincipal', 'menuprincipal.png');
-        
-    //Sonido
-    this.load.setPath('assets/audio/');
-    this.load.audio('explosion', 'explosion.mp3');
-
-    //Tiled
-    this.load.setPath('assets/map/');
-    this.load.image('dungeontiles', 'dungeon_tiles.png');
-    this.load.tilemapTiledJSON('mapa', 'mapa.json');
-    this.load.tilemapTiledJSON('dungeonHidden', 'midungeon_paredoculta.json');
+    this.load.setPath('assets/');
+    this.load.image('tiles', 'tilesets/platformPack_tilesheet.png');
+    this.load.image('dungeontiles', 'tilemaps/dungeon_tiles.png');
+    this.load.tilemapTiledJSON('mymap', 'tilemaps/nivel1.json');
+    //this.load.tilemapTiledJSON('dungeon', 'tilemaps/dungeon-01.json');
+    this.load.tilemapTiledJSON('dungeon', 'tilemaps/midungeon.json');
+    this.load.tilemapTiledJSON('dungeonHidden', 'tilemaps/midungeon_paredoculta.json');
   }
 
   /**
@@ -57,6 +39,6 @@ export default class Boot extends Phaser.Scene {
    * nivel del juego
    */
   create() {
-    this.scene.start('mainmenu');
+    this.scene.start('TiledSceneHidden');
   }
 }

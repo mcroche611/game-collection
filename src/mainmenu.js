@@ -82,5 +82,28 @@ export default class Menu extends Phaser.Scene {
     {
       this.scene.start('parallax');
     });
+
+    this.play3.on('pointerdown', () => 
+    {
+      this.scene.start('parallaxenemies');
+    });
+
+
+    let text = this.add.text(100,100, 'Welcome to my game!');
+    text.setInteractive({ useHandCursor: true });
+    text.on('pointerdown', () => this.clickButton());
+
+    let text2 = this.add.text(100,200, 'Tiled Game');
+    text2.setInteractive({ useHandCursor: true });
+    text2.on('pointerdown', () => this.scene.start('tiledscene'));
+
+    let text3 = this.add.text(100,300, 'Tiled Game 2');
+    text3.setInteractive({ useHandCursor: true });
+    text3.on('pointerdown', () => this.scene.start('tiledscenehidden'));
+  }
+
+  clickButton()
+  {
+    this.scene.start('torusscene');
   }
 }
