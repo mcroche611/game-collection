@@ -24,15 +24,22 @@ export default class Boot extends Phaser.Scene {
     this.load.image('base', 'base.png');
     this.load.image('star', 'star.png');
     this.load.image('player', 'player.png');
-    //this.load.spritesheet('guy', 'guy.png',
-    //{ frameWidth: 612, frameHeight: 1046 });
+    this.load.spritesheet('playeranim', 
+    'NicePng_sprite-png_2007324.png',
+    { frameWidth: 64, frameHeight: 64 });
 
     this.load.spritesheet('guy', 'guy1400.png',
     { frameWidth: 200, frameHeight: 342 });
+
+    this.load.spritesheet('botones', 'botones.png', {
+      frameWidth: 240,
+      frameHeight: 48
+    });
     
     //Cargamos los fondos
     this.load.image('sky', 'sky-clouds.jpg');
     this.load.image('mountains', 'mountains1000.png');
+    this.load.image('menuprincipal', 'menuprincipal.png');
         
     
     
@@ -43,6 +50,6 @@ export default class Boot extends Phaser.Scene {
    * nivel del juego
    */
   create() {
-    this.scene.start('parallax');
+    this.scene.start('mainmenu');
   }
 }
