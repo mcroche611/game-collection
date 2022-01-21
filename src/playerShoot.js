@@ -1,10 +1,10 @@
-//import Hook from './hook.js';
+import Hook from './hook.js';
 
 /**
  * Clase que representa el jugador del juego. El jugador se mueve por el mundo usando los cursores.
  * También almacena la puntuación o número de estrellas que ha recogido hasta el momento.
  */
-export default class PlayerAnimations extends Phaser.GameObjects.Sprite {
+export default class PlayerShoot extends Phaser.GameObjects.Sprite {
 
   /**
    * Constructor del jugador
@@ -89,6 +89,9 @@ export default class PlayerAnimations extends Phaser.GameObjects.Sprite {
       frameRate: 10,
       repeat: -1
     });
+
+
+    this.shootEnabled = true;
   }
 
   /**
@@ -146,24 +149,37 @@ export default class PlayerAnimations extends Phaser.GameObjects.Sprite {
       //this.body.offset.x= 10;
     }
 
-    // if (this.space.isDown)
-    // {
-    //   let hook = new Hook(this.scene, this.x, this.y);
+    if (this.space.isDown && this.shootEnabled)
+    {
+      let hook = new Hook(this.scene, this.x, this.y);
 
-    //   this.scene.hooks.add(hook);
-    // }
+      this.scene.hooks.add(hook);
+
+      this.shootEnabled = false;
+
+      let myTimeout = setTimeout(this.enableShoot, 100, this);
+    }
 
     // if (this.scene.physics.overlap(this.scene.bubbles, this)) {
 
     //   this.decreaseLives();
-    //}
+    // }
   }
 
+  enableShoot(player)
+  {
+    player.shootEnabled = true;
+  }
 
   decreaseLives() {
     this.lives--;
+    console.log(`lives: ${this.lives}`);
 
     if (this.lives <= 0)
-      this.destroy();
+    {
+      this.scene.scene.start('mainmenu');
+      //this.destroy();
+    }
+      
   }
 }

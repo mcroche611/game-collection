@@ -24,6 +24,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image('base', 'base.png');
     this.load.image('star', 'star.png');
     this.load.image('player', 'player.png');
+    this.load.image('hook', 'tip.png');
     this.load.spritesheet('playeranim', 
     'NicePng_sprite-png_2007324.png',
     { frameWidth: 64, frameHeight: 64 });
@@ -50,6 +51,7 @@ export default class Boot extends Phaser.Scene {
     this.load.image('dungeontiles', 'dungeon_tiles.png');
     this.load.tilemapTiledJSON('mapa', 'mapa.json');
     this.load.tilemapTiledJSON('dungeonHidden', 'midungeon_paredoculta.json');
+    this.load.tilemapTiledJSON('large_map', 'large_map.json');
   }
 
   /**

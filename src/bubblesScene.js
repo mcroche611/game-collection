@@ -1,6 +1,6 @@
 import Bubble from './bubble.js';
-import Wall from './wall.js';
-import Player from './player.js';
+import PlayerShoot from './playerShoot.js';
+
 
 /**
  * Escena principal del juego. La escena se compone de una serie de plataformas 
@@ -10,12 +10,12 @@ import Player from './player.js';
  * El juego termina cuando el jugador ha recogido 10 estrellas.
  * @extends Phaser.Scene
  */
-export default class WalkAnimations extends Phaser.Scene {
+export default class BubblesScene extends Phaser.Scene {
   /**
    * Constructor de la escena
    */
   constructor() {
-    super({ key: 'walkanimations' });
+    super({ key: 'bubblesscene' });
     this.NUM_CIRCLES = 10;
   }
 
@@ -26,12 +26,16 @@ export default class WalkAnimations extends Phaser.Scene {
   {
     this.stars = 10;
     this.bases = this.add.group();
-    this.player = new Player(this, 200, 500);
+    this.player = new PlayerShoot(this, 200, 500);
+    
     this.wall = this.add.rectangle(20, 0, 2000, 10, 0xff0000);
     this.add.existing(this.wall);
     this.physics.add.existing(this.wall);
+    this.wall.body.setAllowGravity(false);
 
     this.bubbles = this.add.group();
+    // this.bubbles = this.physics.add.group({allowGravity: false,
+    //   collideWorldBounds: true,});
 
     for (let i = 0; i < this.NUM_CIRCLES; i++) {
       let x = this.getRandomInt(0.10, 900);
@@ -39,44 +43,71 @@ export default class WalkAnimations extends Phaser.Scene {
       let bubble = new Bubble(this, x, y);
 
       this.bubbles.add(bubble);
+
+      // this.physics.add.collider(this.player, bubble, this.collisionCallback); 
     }
 
+    this.physics.add.collider(this.player, this.bubbles, this.collisionCallback); 
+    
     this.hooks = this.add.group();
+
+    this.physics.add.collider(this.hooks, this.bubbles, this.destroyObjects); 
+
+    //this.physics.add.collider(this.hooks, this.wall, this.crashWall); 
+  }
+
+  crashWall(hook, wall)
+  {
+    console.log('crash wall');
+  }
+
+  destroyObjects(hook, bubble)
+  {
+    console.log('destroy hook and ball');
+    let bubbles = bubble.scene.bubbles;
+    let hooks = hook.scene.hooks;
+
+    bubbles.remove(bubble, true, true); 
+    hooks.remove(hook, true, true);
+    // if (gr.contains(obj1))
+    // {
+    //   gr.remove(obj1, true, true); 
+    // }
+    // else if (gr.contains(obj2))
+    // {
+    //     gr.remove(obj2, true, true); 
+    // }
   }
 
     //Crea objetos dinamicos con el metodo add.group
-    createRandomBalls(){
+    // createRandomBalls(){
     
-      console.log('createRandomBalls starting');
-      let { width, height } = this.sys.game.canvas;
-      this.balls =  this.physics.add.group({
-        key: 'aqua_ball',
-        repeat: 20,
-        allowGravity: true,
-        collideWorldBounds: true,
-        setXY: { x: 100, y: 150, stepX: 120}
-        });
-        //añadimos el collider al grupo
-        this.physics.add.collider(this.player, this.balls, this.collisionCallback);  
+    //   console.log('createRandomBalls starting');
+    //   let { width, height } = this.sys.game.canvas;
+    //   this.balls =  this.physics.add.group({
+    //     key: 'aqua_ball',
+    //     repeat: 20,
+    //     allowGravity: true,
+    //     collideWorldBounds: true,
+    //     setXY: { x: 100, y: 150, stepX: 120}
+    //     });
+    //     //añadimos el collider al grupo
+    //     this.physics.add.collider(this.player, this.bubbles, this.collisionCallback);  
   
-        //recorremos el grupo y ponemos posiciones aleatorias
-        this.balls.children.iterate( child => {
-              child.setName('gota');
-              child.setPosition(Phaser.Math.RND.between(0,width), Phaser.Math.RND.between(0,height/2))})    
+    //     //recorremos el grupo y ponemos posiciones aleatorias
+    //     this.balls.children.iterate( child => {
+    //           child.setName('gota');
+    //           child.setPosition(Phaser.Math.RND.between(0,width), Phaser.Math.RND.between(0,height/2))})    
                       
-    }
+    // }
   
-    collisionCallback(obj1, obj2) 
+    collisionCallback(player, bubble) 
     {
-      let gr= obj1.scene.balls;
-      if (gr.contains(obj1))
-      {
-        gr.remove(obj1, true, true); 
-      }
-      else if (gr.contains(obj2))
-      {
-          gr.remove(obj2, true, true); 
-      }
+      console.log('collision callback');
+
+      bubble.destroy();
+
+      player.decreaseLives();
   
   
       /*

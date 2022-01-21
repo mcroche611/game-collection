@@ -7,6 +7,8 @@ import ParallaxEnemies from './parallaxEnemies.js';
 import TorusScene from './torusScene.js';
 import TiledScene from './TiledScene.js';
 import TiledSceneHidden from './TiledSceneHidden.js';
+import BubblesScene from './bubblesScene.js';
+import BigTiledScene from './BigTiledScene.js';
 
 /**
  * Inicio del juego en Phaser. Creamos el archivo de configuración del juego y creamos
@@ -15,19 +17,19 @@ import TiledSceneHidden from './TiledSceneHidden.js';
 let config = {
     type: Phaser.AUTO,
     //Tamaño del canvas en pantalla
-    width:  380,
-    height: 400,
+    width:  800,
+    height: 600,
     scale: {
         // mode: Phaser.Scale.FIT,  
         autoCenter: Phaser.Scale.CENTER_HORIZONTALLY
     },
     pixelArt: true,
-    scene: [Boot, Parallax, AnimationsScene, End, Menu, ParallaxEnemies, TorusScene, TiledScene, TiledSceneHidden],
+    scene: [Boot, Parallax, AnimationsScene, End, Menu, ParallaxEnemies, TorusScene, TiledScene, TiledSceneHidden, BubblesScene, BigTiledScene],
     physics: { 
         default: 'arcade', 
         arcade: { 
             gravity: { y: 500 }, 
-            debug: false 
+            debug: true 
         } 
     }
 };

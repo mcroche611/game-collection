@@ -16,10 +16,14 @@ export default class Bubble extends Phaser.GameObjects.Sprite {
 
     create() 
     {
+        console.log('create bubble');
+        
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         // Queremos que la burbuja no se salga de los límites del mundo
         this.body.setCollideWorldBounds();
+
+        this.body.setAllowGravity(false);
 
         // let radius = this.getRandomInt(0, 3) * 18;
 
@@ -59,11 +63,11 @@ export default class Bubble extends Phaser.GameObjects.Sprite {
      */
     preUpdate(t, dt) {
          super.preUpdate(t,dt);
-         if (this.scene.physics.overlap(this.scene.player, this)) {
-            this.destroy();
-        }
-        else if (this.scene.physics.overlap(this.scene.hooks, this)) {
-            this.destroy();
-        }
+        //  if (this.scene.physics.overlap(this.scene.player, this)) {
+        //      this.destroy();
+        // }
+        //  else if (this.scene.physics.overlap(this.scene.hooks, this)) {
+        //      this.destroy();
+        // }
     }
 }

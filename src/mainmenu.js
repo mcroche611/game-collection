@@ -88,18 +88,31 @@ export default class Menu extends Phaser.Scene {
       this.scene.start('parallaxenemies');
     });
 
+    let estilo = {
+      fontFamily: 'Play',
+      fontSize: '20px',
+      color: '#1020DD'
+    };
 
-    let text = this.add.text(100,100, 'Welcome to my game!');
+    let text = this.add.text(100,100, 'Mvtº Toroidal Obj', estilo);
     text.setInteractive({ useHandCursor: true });
     text.on('pointerdown', () => this.clickButton());
 
-    let text2 = this.add.text(100,200, 'Tiled Game');
+    let text2 = this.add.text(100,200, 'Tiled Game', estilo);
     text2.setInteractive({ useHandCursor: true });
     text2.on('pointerdown', () => this.scene.start('tiledscene'));
 
-    let text3 = this.add.text(100,300, 'Tiled Game 2');
+    let text3 = this.add.text(100,300, 'Tiled Game 2', estilo);
     text3.setInteractive({ useHandCursor: true });
     text3.on('pointerdown', () => this.scene.start('tiledscenehidden'));
+
+    let text4 = this.add.text(100,400, 'Bouncing bubbles', estilo);
+    text4.setInteractive({ useHandCursor: true });
+    text4.on('pointerdown', () => this.scene.start('bubblesscene'));
+
+    let text5 = this.add.text(100,500, 'Big scene', estilo);
+    text5.setInteractive({ useHandCursor: true });
+    text5.on('pointerdown', () => this.scene.start('bigtiledscene'));
   }
 
   clickButton()
