@@ -1,5 +1,5 @@
 //Escena del menu principal
-export default class Menu extends Phaser.Scene {
+export default class MainMenu extends Phaser.Scene {
     constructor()
     { 
       super({key: 'mainmenu'});
@@ -110,9 +110,21 @@ export default class Menu extends Phaser.Scene {
     text4.setInteractive({ useHandCursor: true });
     text4.on('pointerdown', () => this.scene.start('bubblesscene'));
 
-    let text5 = this.add.text(100,500, 'Big scene', estilo);
+    let text5 = this.add.text(100,500, 'Camera scene', estilo);
     text5.setInteractive({ useHandCursor: true });
     text5.on('pointerdown', () => this.scene.start('bigtiledscene'));
+
+    let text6 = this.add.text(600, 100, 'Balls game', estilo);
+    text6.setInteractive({ useHandCursor: true });
+    text6.on('pointerdown', () => this.scene.start('ballsscene'));
+
+    let text7 = this.add.text(600, 200, 'Jetpac', estilo);
+    text7.setInteractive({ useHandCursor: true });
+    text7.on('pointerdown', () => this.scene.start('menu'));
+
+    let text8 = this.add.text(600, 300, 'Bee Scroller', estilo);
+    text8.setInteractive({ useHandCursor: true });
+    text8.on('pointerdown', () => this.scene.start('scrollscene'));
   }
 
   clickButton()

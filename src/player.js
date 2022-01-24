@@ -1,106 +1,124 @@
-/**
- * Clase que representa el jugador del juego. El jugador se mueve por el mundo usando los cursores.
- * También almacena la puntuación o número de estrellas que ha recogido hasta el momento.
- */
-export default class Player extends Phaser.GameObjects.Sprite {
-  
+export default class Player extends Phaser.GameObjects.Sprite
+{
+
   /**
    * Constructor del jugador
    * @param {Phaser.Scene} scene Escena a la que pertenece el jugador
    * @param {number} x Coordenada X
    * @param {number} y Coordenada Y
    */
-  constructor(scene, x, y) {
+  constructor(scene, x, y)
+  {
+    super(scene, x, y, 'player');
+    this.fuel = false;
+    this.myHeight = 30;
 
-    const {width, height} = scene.scale;
-    super(scene, width/2, height, 'guy');
-    
-    
-    // Con esto hacemos que su centro de coordenadas esté en el centro de la parte inferior
-    // 0, 0 (izq arriba)   
-    // 1, 1 (der abajo)
     this.setOrigin(0.5, 1);
-    this.setScale(0.25, 0.25);
 
-    this.CreateAnimations();
+    console.log("Creating player");
 
-    this.score = 0;
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
-    // Queremos que el jugador no se salga de los límites del mundo
-    this.body.setCollideWorldBounds();
-    this.speed = 300;
-    this.jumpSpeed = -400;
-    this.body.setBounceX = 0;
-    // Esta label es la UI en la que pondremos la puntuación del jugador
-    //Añadimos el setScrollFactor para que no se mueva con el scroll
-    this.label = this.scene.add.text(10, 10, "").setOrigin(0,0).setScrollFactor(0,0);
+
+    this.body.offset.y = 0;
+
+    this.speed = 100;
+    this.jumpSpeed = -100;
+
     this.cursors = this.scene.input.keyboard.createCursorKeys();
-    this.updateScore();
 
-    this.body.setVelocityX(this.speed);
-    this.anims.play('right', true);
-  }
+    this.space = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.esc = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
 
-
-  /** Crea animaciones */
-  CreateAnimations()
-  {
     this.anims.create({
-      key: 'right',
-      frames: this.anims.generateFrameNumbers('guy', { start: 0, end: 6 }),
+      key: 'walk',
+      frames: this.anims.generateFrameNumbers('player', { start: 4, end: 7 }),
       frameRate: 10,
       repeat: -1
-  });
-  this.anims.create({
-    key: 'left',
-    frames: this.anims.generateFrameNumbers('guy', { start: 7, end: 14 }),
-    frameRate: 10,
-    repeat: -1
-});
+    });
+
+    this.anims.create({
+      key: 'fly',
+      frames: this.anims.generateFrameNumbers('player', { start: 0, end: 3 }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    console.log("Finish player");
   }
 
-  /**
-   * El jugador ha recogido una estrella por lo que este método añade un punto y
-   * actualiza la UI con la puntuación actual.
-   */
-  point() {
-    this.score++;
-    this.updateScore();
-  }
-  
-  /**
-   * Actualiza la UI con la puntuación actual
-   */
-  updateScore() {
-    this.label.text = 'Score: ' + this.scene.cameras.main.scrollX;
+  pickUpFuel(player, fuel)
+  {
+    this.scene.pick.play();
+    fuel.destroy();
+    this.fuel = true;
+    this.fuelImage = this.scene.add.image(this.x, this.y - this.myHeight, 'fuel');
   }
 
-  /**
-   * Métodos preUpdate de Phaser. En este caso solo se encarga del movimiento del jugador.
-   * Como se puede ver, no se tratan las colisiones con las estrellas, ya que estas colisiones 
-   * ya son gestionadas por la estrella (no gestionar las colisiones dos veces)
-   * @override
-   */
-  preUpdate(t,dt) {
-    super.preUpdate(t,dt);
-    if (this.cursors.up.isDown && this.body.onFloor()) {
+  preUpdate(t, dt)
+  {
+    super.preUpdate(t, dt);
+
+    //console.log(`Player (${this.x}, ${this.y})`);
+    if (this.cursors.up.isDown)
+    {
+      //this.play('fly', true);
       this.body.setVelocityY(this.jumpSpeed);
     }
-    if (this.cursors.left.isDown) {
-      this.body.setVelocityX(-this.speed);
-      this.anims.play('left', true);
-    }
-    else if (this.cursors.right.isDown) {
-      this.anims.play('right', true);
+
+    if (this.cursors.right.isDown)
+    {
+      this.flipX = false;
       this.body.setVelocityX(this.speed);
-      
     }
-    else {
-      // this.body.setVelocityX(0); //If in create() constant movement 
-      // this.anims.stop();
+    else if (this.cursors.left.isDown)
+    {
+      this.flipX = true;
+      this.body.setVelocityX(-this.speed);
     }
-    this.updateScore();
+    else
+    {
+      this.body.setVelocityX(0);
+    }
+
+    if (this.body.onFloor())
+    {
+
+      //console.log('velocity ', this.body.velocity.x);
+      if (this.body.velocity.x != 0) 
+      {
+        this.play('walk', true);
+      }
+      else
+        this.play('walk', false);
+    }
+    else
+    {
+      this.play('fly', true);
+    }
+
+    if (this.esc.isDown)
+    {
+      this.scene.scene.start('menu');
+    }
+    else
+    {
+
+    }
+
+    if (this.fuel)
+    {
+      this.fuelImage.x = this.x;
+      this.fuelImage.y = this.y - this.myHeight;
+    }
   }
-  
+
+  decreaseLives()
+  {
+    this.explosion = this.sound.add('explosion');
+    this.lives--;
+
+    if (this.lives <= 0)
+      this.destroy();
+  }
 }

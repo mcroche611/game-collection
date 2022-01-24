@@ -1,12 +1,8 @@
-export default class Hook extends Phaser.GameObjects.Sprite {
+export default class Hook extends Phaser.GameObjects.Sprite
+{
 
-    /**
-     * Constructor de Star
-     * @param {Sceme} scene Escena en la que aparece la estrella
-     * @param {number} x coordenada x
-     * @param {number} y coordenada y
-     */
-    constructor(scene, x, y) {
+    constructor(scene, x, y)
+    {
         super(scene, x, y, 'hook');
 
         this.speed = 300;
@@ -15,12 +11,13 @@ export default class Hook extends Phaser.GameObjects.Sprite {
     }
 
     create() 
-     {
+    {
         // this.scene.physics.add.collider(this, this.scene.bubbles);
 
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this);
         this.body.setAllowGravity(false);
+        
         // Queremos que el gancho no se salga de los límites del mundo
         this.body.setCollideWorldBounds();
 
@@ -35,22 +32,19 @@ export default class Hook extends Phaser.GameObjects.Sprite {
      * Redefinición del preUpdate de Phaser
      * @override
      */
-    preUpdate(t, dt) {
-        super.preUpdate(t,dt);
+    preUpdate(t, dt)
+    {
+        super.preUpdate(t, dt);
 
         // if (this.scene.physics.overlap(this.scene.bubbles, this)) {
         //     console.log("bullet hit bubble");
         //     this.destroy();
         // }
-         if (this.scene.physics.overlap(this.scene.wall, this))
-     {
-          console.log("collision");
-          this.destroy();
-    }
-        // else
-        // {
-
-        // }
+        if (this.scene.physics.overlap(this.scene.wall, this))
+        {
+            console.log("collision");
+            this.destroy();
+        }
 
     }
 }

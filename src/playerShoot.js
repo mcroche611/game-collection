@@ -4,7 +4,8 @@ import Hook from './hook.js';
  * Clase que representa el jugador del juego. El jugador se mueve por el mundo usando los cursores.
  * También almacena la puntuación o número de estrellas que ha recogido hasta el momento.
  */
-export default class PlayerShoot extends Phaser.GameObjects.Sprite {
+export default class PlayerShoot extends Phaser.GameObjects.Sprite
+{
 
   /**
    * Constructor del jugador
@@ -12,7 +13,8 @@ export default class PlayerShoot extends Phaser.GameObjects.Sprite {
    * @param {number} x Coordenada X
    * @param {number} y Coordenada Y
    */
-  constructor(scene, x, y) {
+  constructor(scene, x, y)
+  {
     super(scene, x, y, 'playeranim');
     this.score = 0;
     this.lives = 3;
@@ -27,7 +29,7 @@ export default class PlayerShoot extends Phaser.GameObjects.Sprite {
 
     this.body.setSize(this.width * 0.5, this.height * 0.8)
     //this.body.setSize(30, 50);
-    this.body.offset.y= 0;
+    this.body.offset.y = 0;
 
     // Queremos que el jugador no se salga de los límites del mundo
     // IMPORTANTE: No ponerlo para mundos más grandes que la vista. BCS
@@ -51,7 +53,6 @@ export default class PlayerShoot extends Phaser.GameObjects.Sprite {
     this.wKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.space = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.esc = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-    this.updateScore();
 
     this.anims.create({
       key: 'idle',
@@ -95,56 +96,47 @@ export default class PlayerShoot extends Phaser.GameObjects.Sprite {
   }
 
   /**
-   * El jugador ha recogido una estrella por lo que este método añade un punto y
-   * actualiza la UI con la puntuación actual.
-   */
-  point() {
-    this.score++;
-    this.updateScore();
-  }
-
-  /**
-   * Actualiza la UI con la puntuación actual
-   */
-  updateScore() {
-    this.label.text = 'Score: ' + this.score;
-  }
-
-  /**
    * Métodos preUpdate de Phaser. En este caso solo se encarga del movimiento del jugador.
    * Como se puede ver, no se tratan las colisiones con las estrellas, ya que estas colisiones 
-   * ya son gestionadas por la estrella (no gestionar las colisiones dos veces)
+   * ya son gestionadas por la scene (no gestionar las colisiones dos veces)
    * @override
    */
-  preUpdate(t, dt) {
+  preUpdate(t, dt)
+  {
     super.preUpdate(t, dt);
 
     //console.log(`Player (${this.x}, ${this.y})`);
     // if (this.cursors.up.isDown && this.body.onFloor()) {
     //   this.body.setVelocityY(this.jumpSpeed);
     // }
-    if (this.aKey.isDown) {
+    if (this.aKey.isDown)
+    {
       this.play('left', true);
       this.body.setVelocityX(-this.speed);
 
     }
-    else if (this.dKey.isDown) {
+    else if (this.dKey.isDown)
+    {
       this.body.setVelocityX(this.speed);
       this.play('right', true);
     }
-    else if (this.sKey.isDown) {
+    else if (this.sKey.isDown)
+    {
       this.body.setVelocityY(this.speed);
       this.play('up', true);
     }
-    else if (this.wKey.isDown) {
+    else if (this.wKey.isDown)
+    {
       this.body.setVelocityY(-this.speed);
       this.play('down', true);
     }
-    else if (this.esc.isDown) {
+    else if (this.esc.isDown)
+    {
       this.scene.scene.start('mainmenu');
     }
-    else {
-      this.body.setVelocity(0,0);
+    else
+    {
+      this.body.setVelocity(0, 0);
       this.play('idle', true);
       //this.body.offset.x= 10;
     }
@@ -171,7 +163,8 @@ export default class PlayerShoot extends Phaser.GameObjects.Sprite {
     player.shootEnabled = true;
   }
 
-  decreaseLives() {
+  decreaseLives()
+  {
     this.lives--;
     console.log(`lives: ${this.lives}`);
 
@@ -180,6 +173,5 @@ export default class PlayerShoot extends Phaser.GameObjects.Sprite {
       this.scene.scene.start('mainmenu');
       //this.destroy();
     }
-      
   }
 }
